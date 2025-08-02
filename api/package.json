@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "test:staged": "jest",
-    "test:only": "jest --no-coverage",
+    "test:only": "jest --no-coverage --watch",
     "prepare": "husky"
   },
   "keywords": [],
