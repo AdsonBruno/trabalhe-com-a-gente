@@ -1,4 +1,5 @@
 import { SearchRepositoryController } from './searchRepository';
+import { MissingParamError } from '../errors/missingParamError';
 
 describe('Search Repository Controller', () => {
   test('Should return 400 if no query is provided', () => {
@@ -8,6 +9,6 @@ describe('Search Repository Controller', () => {
     };
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new Error('Missing query parameter'));
+    expect(httpResponse.body).toEqual(new MissingParamError('query parameter'));
   });
 });
