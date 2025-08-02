@@ -1,9 +1,13 @@
 import { SearchRepositoryController } from './searchRepository';
 import { MissingParamError } from '../errors/missingParamError';
 
+const makeSut = (): SearchRepositoryController => {
+  return new SearchRepositoryController();
+};
+
 describe('Search Repository Controller', () => {
   test('Should return 400 if no query is provided', () => {
-    const sut = new SearchRepositoryController();
+    const sut = makeSut();
     const httpRequest = {
       body: {},
     };
