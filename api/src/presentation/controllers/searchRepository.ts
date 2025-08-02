@@ -1,8 +1,9 @@
 import { MissingParamError } from '../errors/missingParamError';
 import { HttpResponse, HttpRequest } from '../protocols/http';
 import { badRequest } from '../helpers/httpHelper';
+import { Controller } from '../protocols/controller';
 
-export class SearchRepositoryController {
+export class SearchRepositoryController implements Controller {
   handle(httpRequest: HttpRequest): HttpResponse {
     if (!httpRequest.body.query) {
       return badRequest(new MissingParamError('query parameter'));
