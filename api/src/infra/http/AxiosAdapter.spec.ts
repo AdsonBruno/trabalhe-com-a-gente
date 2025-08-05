@@ -51,4 +51,23 @@ describe('Axios Adapter', () => {
       body: mockedResponse.data,
     });
   });
+
+  test('should return the correct status code and body on error', async () => {
+    const sut = makeSut();
+    const mockedError = {
+      response: {
+        status: 404,
+        data: { error: 'Not Found' },
+      },
+    };
+
+    mockAxios.get.mockRejectedValueOnce(mockedError);
+
+    const httpResponse = await sut.get({ url: 'https://any_url.com' });
+
+    expect(httpResponse).toEqual({
+      statusCode: mockedError.response.status,
+      body: mockedError.response.data,
+    });
+  });
 });
