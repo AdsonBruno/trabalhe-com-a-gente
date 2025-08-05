@@ -1,3 +1,13 @@
+export interface IHttpRequest {
+  url: string;
+  params?: any;
+}
+
+export interface IHttpResponse {
+  statusCode: number;
+  body: any;
+}
+
 export interface IHttpClient {
-  get(url: string, config?: any): Promise<any>;
+  get(data: IHttpRequest): Promise<IHttpResponse>;
 }
