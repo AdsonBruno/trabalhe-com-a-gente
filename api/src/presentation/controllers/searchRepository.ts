@@ -20,7 +20,6 @@ export class SearchRepositoryController implements Controller {
       perPage: parseInt(String(per_page), 10),
     });
 
-    // Return a default success response (customize as needed)
     return {
       body: { message: 'Query received successfully.' },
       statusCode: 200,
