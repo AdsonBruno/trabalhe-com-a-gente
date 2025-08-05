@@ -70,4 +70,15 @@ describe('Axios Adapter', () => {
       body: mockedError.response.data,
     });
   });
+
+  test('should throw if axios throws an error without response object', async () => {
+    const sut = makeSut();
+    const mokedError = new Error('Network Error');
+
+    mockAxios.get.mockRejectedValueOnce(mokedError);
+
+    const pormise = sut.get({ url: 'https://any_url.com' });
+
+    await expect(pormise).rejects.toThrow(mokedError);
+  });
 });
