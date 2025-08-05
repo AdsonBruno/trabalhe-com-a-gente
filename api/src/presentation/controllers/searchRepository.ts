@@ -2,7 +2,7 @@ import { MissingParamError } from '../errors/missingParamError';
 import { HttpResponse, HttpRequest } from '../protocols/http';
 import { badRequest } from '../helpers/httpHelper';
 import { Controller } from '../protocols/controller';
-import { RepositoryGit } from '../../domain/interfaces/RepositoryGit';
+import { RepositoryGit } from '../../domain/interfaces/IRepositoryGit';
 
 export class SearchRepositoryController implements Controller {
   constructor(private readonly repositoryService: RepositoryGit) {}
