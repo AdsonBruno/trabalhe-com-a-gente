@@ -2,6 +2,7 @@ import {
   ISearchParams,
   ISearchResult,
 } from '../../domain/interfaces/IRepositoryGit';
+import { UnexpectedError } from '../../presentation/errors/unexpectedError';
 import {
   IHttpClient,
   IHttpResponse,
@@ -75,5 +76,14 @@ describe('Git Repository Service', () => {
     const result = await sut.search({ query: 'any', page: 1, perPage: 10 });
 
     expect(result).toEqual(mockResult);
+  });
+
+  test('should throw unexpected error if http client returns an error', async () => {
+    const { sut, httpClientSpy } = makeSut();
+    httpClientSpy.response.statusCode = 500;
+
+    const promise = sut.search({ query: 'any', page: 1, perPage: 10 });
+
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 });

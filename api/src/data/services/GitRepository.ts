@@ -27,6 +27,8 @@ export class GitRepository implements RepositoryGit {
 
     if (httpResponse.statusCode === 200) {
       return httpResponse.body;
+    } else {
+      throw new UnexpectedError();
     }
   }
 }
