@@ -37,4 +37,18 @@ describe('Axios Adapter', () => {
       params: request.params,
     });
   });
+
+  test('should return the correcct status code and body on success', async () => {
+    const sut = makeSut();
+    const mockedResponse = mockHttpResponse();
+
+    mockAxios.get.mockResolvedValueOnce(mockedResponse);
+
+    const httpResponse = await sut.get({ url: 'https://any_url.com' });
+
+    expect(httpResponse).toEqual({
+      statusCode: mockedResponse.status,
+      body: mockedResponse.data,
+    });
+  });
 });
