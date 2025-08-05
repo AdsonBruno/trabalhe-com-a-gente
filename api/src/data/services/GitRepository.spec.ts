@@ -1,4 +1,7 @@
-import { ISearchParams } from '../../domain/interfaces/IRepositoryGit';
+import {
+  ISearchParams,
+  ISearchResult,
+} from '../../domain/interfaces/IRepositoryGit';
 import {
   IHttpClient,
   IHttpResponse,
@@ -40,5 +43,37 @@ describe('Git Repository Service', () => {
     await sut.search(searchParams);
 
     expect(httpClientSpy.url).toBe(url);
+  });
+
+  test('should return a list of repositories on success and status code 200', async () => {
+    const { sut, httpClientSpy } = makeSut();
+
+    const mockResult: ISearchResult = {
+      totalCount: 1,
+      items: [
+        {
+          id: '1',
+          name: 'any_name',
+          fullName: 'any_full_name',
+          url: 'https://any-url.com/repo',
+          description: 'any_description',
+          stargazersCount: 100,
+          watchersCount: 50,
+          forksCount: 10,
+          openIssuesCount: 5,
+          owner: {
+            id: 1,
+            login: 'any_login',
+            avatarUrl: 'https://any-url.com/avatar.png',
+          },
+        },
+      ],
+    };
+
+    httpClientSpy.response.body = mockResult;
+
+    const result = await sut.search({ query: 'any', page: 1, perPage: 10 });
+
+    expect(result).toEqual(mockResult);
   });
 });
