@@ -9,11 +9,11 @@ export class SearchRepositoryController implements Controller {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      if (!httpRequest.body.query) {
+      if (!httpRequest.query || !httpRequest.query.query) {
         return badRequest(new MissingParamError('query'));
       }
 
-      const { query, page = '1', per_page = '10' } = httpRequest.body;
+      const { query, page = '1', per_page = '10' } = httpRequest.query;
 
       const result = await this.repositoryService.search({
         query: String(query),
@@ -22,10 +22,6 @@ export class SearchRepositoryController implements Controller {
       });
 
       return ok(result);
-      // return {
-      //   body: { message: 'Query received successfully.' },
-      //   statusCode: 200,
-      // };}
     } catch (error) {
       return serverError(error);
     }
