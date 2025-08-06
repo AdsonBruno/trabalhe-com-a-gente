@@ -1,18 +1,18 @@
-import { SearchRepositoryController } from './searchRepository';
-import { MissingParamError } from '../errors/missingParamError';
+import { SearchRepositoryController } from './SearchRepository';
+import { MissingParamError } from '../errors/MissingParamError';
 import {
-  ISearchParams,
-  ISearchResult,
+  SearchParams,
+  SearchResult,
   RepositoryGit,
 } from '../../domain/interfaces/IRepositoryGit';
-import { UnexpectedError } from '../errors/unexpectedError';
-import { HttpRequest } from '../protocols/http';
+import { UnexpectedError } from '../errors/UnexpectedError';
+import { HttpRequest } from '../protocols/Http';
 
 class MockRepositoryServiceSpy implements RepositoryGit {
   params?: any;
-  result: ISearchResult = { totalCount: 1, items: [] };
+  result: SearchResult = { totalCount: 1, items: [] };
 
-  async search(params: ISearchParams): Promise<ISearchResult> {
+  async search(params: SearchParams): Promise<SearchResult> {
     this.params = params;
 
     return this.result;

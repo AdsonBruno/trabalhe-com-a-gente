@@ -1,23 +1,23 @@
 import {
-  ISearchParams,
-  ISearchResult,
+  SearchParams,
+  SearchResult,
 } from '../../domain/interfaces/IRepositoryGit';
-import { UnexpectedError } from '../../presentation/errors/unexpectedError';
+import { UnexpectedError } from '../../presentation/errors/UnexpectedError';
 import {
-  IHttpClient,
-  IHttpResponse,
+  HttpClient,
+  HttpResponse,
 } from '../protocols/http/interfaces/IHttpClient';
 import { GitRepository } from './GitRepository';
 
-class HttpClientSpy implements IHttpClient {
+class HttpClientSpy implements HttpClient {
   url?: string;
   params?: any;
-  response: IHttpResponse = {
+  response: HttpResponse = {
     statusCode: 200,
     body: { totalCount: 1, items: [{ id: 1, name: 'any_name' }] },
   };
 
-  async get(data: { url: string; params?: any }): Promise<IHttpResponse> {
+  async get(data: { url: string; params?: any }): Promise<HttpResponse> {
     this.url = data.url;
     this.params = data.params;
 
@@ -36,7 +36,7 @@ const makeSut = () => {
 describe('Git Repository Service', () => {
   test('should call HttpClient with correct URL and params', async () => {
     const { sut, httpClientSpy, url } = makeSut();
-    const searchParams: ISearchParams = {
+    const searchParams: SearchParams = {
       query: 'react',
       page: 1,
       perPage: 10,
@@ -49,7 +49,7 @@ describe('Git Repository Service', () => {
   test('should return a list of repositories on success and status code 200', async () => {
     const { sut, httpClientSpy } = makeSut();
 
-    const mockResult: ISearchResult = {
+    const mockResult: SearchResult = {
       totalCount: 1,
       items: [
         {

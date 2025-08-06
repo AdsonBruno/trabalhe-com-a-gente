@@ -1,5 +1,5 @@
 import { AxiosAdapter } from '../http/AxiosAdapter';
-import { IHttpRequest } from '../../data/protocols/http/interfaces/IHttpClient';
+import { HttpRequest } from '../../data/protocols/http/interfaces/IHttpClient';
 import axios from 'axios';
 
 const mockAxios = axios as jest.Mocked<typeof axios>;
@@ -24,7 +24,7 @@ describe('Axios Adapter', () => {
 
   test('should call axios.get with correct URL and params', async () => {
     const sut = makeSut();
-    const request: IHttpRequest = {
+    const request: HttpRequest = {
       url: 'https://any_url.com',
       params: {
         any_param: 'any_value',

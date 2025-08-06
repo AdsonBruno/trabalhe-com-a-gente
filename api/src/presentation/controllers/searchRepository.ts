@@ -1,7 +1,7 @@
-import { MissingParamError } from '../errors/missingParamError';
-import { HttpResponse, HttpRequest } from '../protocols/http';
-import { badRequest, ok, serverError } from '../helpers/httpHelper';
-import { Controller } from '../protocols/controller';
+import { MissingParamError } from '../errors/MissingParamError';
+import { HttpResponse, HttpRequest } from '../protocols/Http';
+import { badRequest, ok, serverError } from '../helpers/HttpHelper';
+import { Controller } from '../protocols/Controller';
 import { RepositoryGit } from '../../domain/interfaces/IRepositoryGit';
 
 export class SearchRepositoryController implements Controller {

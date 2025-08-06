@@ -1,5 +1,5 @@
-import { UnexpectedError } from '../errors/unexpectedError';
-import { HttpResponse } from '../protocols/http';
+import { UnexpectedError } from '../errors/UnexpectedError';
+import { HttpResponse } from '../protocols/Http';
 
 export const badRequest = (error: Error): HttpResponse => ({
   statusCode: 400,

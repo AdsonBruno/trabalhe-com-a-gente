@@ -1,12 +1,12 @@
 import axios from 'axios';
 import {
-  IHttpClient,
-  IHttpRequest,
-  IHttpResponse,
+  HttpClient,
+  HttpRequest,
+  HttpResponse,
 } from '../../data/protocols/http/interfaces/IHttpClient';
 
-export class AxiosAdapter implements IHttpClient {
-  async get(data: IHttpRequest): Promise<IHttpResponse> {
+export class AxiosAdapter implements HttpClient {
+  async get(data: HttpRequest): Promise<HttpResponse> {
     try {
       const axiosResponse = await axios.get(data.url, { params: data.params });
 

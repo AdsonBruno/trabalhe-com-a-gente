@@ -1,22 +1,22 @@
 import {
-  ISearchParams,
-  ISearchResult,
+  SearchParams,
+  SearchResult,
   RepositoryGit,
 } from '../../domain/interfaces/IRepositoryGit';
-import { UnexpectedError } from '../../presentation/errors/unexpectedError';
+import { UnexpectedError } from '../../presentation/errors/UnexpectedError';
 import {
-  IHttpClient,
-  IHttpResponse,
+  HttpClient,
+  HttpResponse,
 } from '../protocols/http/interfaces/IHttpClient';
 
 export class GitRepository implements RepositoryGit {
   constructor(
     private readonly url: string,
-    private readonly httpClient: IHttpClient
+    private readonly httpClient: HttpClient
   ) {}
 
-  async search(params: ISearchParams): Promise<ISearchResult> {
-    const httpResponse: IHttpResponse = await this.httpClient.get({
+  async search(params: SearchParams): Promise<SearchResult> {
+    const httpResponse: HttpResponse = await this.httpClient.get({
       url: this.url,
       params: {
         q: params.query,

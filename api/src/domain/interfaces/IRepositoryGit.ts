@@ -1,33 +1,33 @@
-export interface IOwner {
+export interface Owner {
   id: number;
   login: string;
   avatarUrl: string;
 }
 
-export interface IRepositoryModel {
+export interface RepositoryModel {
   id: string;
   name: string;
   fullName: string;
   description: string;
   url: string;
-  owner: IOwner;
+  owner: Owner;
   stargazersCount: number;
   watchersCount: number;
   forksCount: number;
   openIssuesCount: number;
 }
 
-export interface ISearchResult {
+export interface SearchResult {
   totalCount: number;
-  items: IRepositoryModel[];
+  items: RepositoryModel[];
 }
 
-export interface ISearchParams {
+export interface SearchParams {
   query: string;
   page: number;
   perPage: number;
 }
 
 export interface RepositoryGit {
-  search(params: ISearchParams): Promise<ISearchResult>;
+  search(params: SearchParams): Promise<SearchResult>;
 }
