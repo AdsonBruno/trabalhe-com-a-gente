@@ -3,8 +3,17 @@ import { AxiosAdapter } from './infra/http/AxiosAdapter';
 import { GitRepository } from './data/services/GitRepository';
 import { SearchRepositoryController } from './presentation/controllers/searchRepository';
 import { adaptRoute } from './main/adapters/ExpressRouteAdapter';
+import { configDotenv } from 'dotenv';
 
-const GITHUB_API_URL = 'https://api.github.com/search/repositories';
+configDotenv();
+
+const GITHUB_API_URL = process.env.GITHUB_API_URL; //'https://api.github.com/search/repositories';
+
+if (!GITHUB_API_URL) {
+  console.error(
+    'Erro: The environment variable GITHUB_API_URL is not defined.'
+  );
+}
 const axiosAdapter = new AxiosAdapter();
 const gitRepository = new GitRepository(GITHUB_API_URL, axiosAdapter);
 const searchRepositoryController = new SearchRepositoryController(

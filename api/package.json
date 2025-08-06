@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/server.js",
+    "build": "tsc",
+    "dev": "nodemon --watch src/**/*.ts --exec \"npx ts-node src/server.ts\"",
     "test": "jest",
     "test:staged": "jest",
     "test:only": "jest --no-coverage --watch",
@@ -18,11 +21,13 @@
     "@types/node": "^24.1.0",
     "husky": "^9.1.7",
     "jest": "^30.0.5",
+    "nodemon": "^3.1.10",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "dotenv": "^17.2.1",
     "express": "^5.1.0"
   }
 }
