@@ -5,6 +5,7 @@ import {
   ISearchResult,
   RepositoryGit,
 } from '../../domain/interfaces/IRepositoryGit';
+import { UnexpectedError } from '../errors/unexpectedError';
 
 class MockRepositoryServiceSpy implements RepositoryGit {
   params?: any;
@@ -52,5 +53,18 @@ describe('Search Repository Controller', () => {
       page: 2,
       perPage: 30,
     });
+  });
+
+  test('should return status code 500 if repository service throws', async () => {
+    const { sut, repositoryServiceSpy } = makeSut();
+    jest.spyOn(repositoryServiceSpy, 'search').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const httpRequest = { body: { query: 'any_query' } };
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body.error).toEqual(new UnexpectedError().message);
   });
 });

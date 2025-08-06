@@ -1,3 +1,4 @@
+import { UnexpectedError } from '../errors/unexpectedError';
 import { HttpResponse } from '../protocols/http';
 
 export const badRequest = (error: Error): HttpResponse => ({
@@ -7,7 +8,7 @@ export const badRequest = (error: Error): HttpResponse => ({
 
 export const serverError = (error: Error): HttpResponse => ({
   statusCode: 500,
-  body: error,
+  body: { error: new UnexpectedError().message },
 });
 
 export const ok = (data: any): HttpResponse => ({
