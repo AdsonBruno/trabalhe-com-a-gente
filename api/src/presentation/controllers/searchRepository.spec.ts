@@ -1,27 +1,42 @@
 import { SearchRepositoryController } from './searchRepository';
 import { MissingParamError } from '../errors/missingParamError';
+import {
+  ISearchParams,
+  ISearchResult,
+  RepositoryGit,
+} from '../../domain/interfaces/IRepositoryGit';
 
-const mockRepositoryService = {
-  search: jest.fn(),
-};
+class MockRepositoryServiceSpy implements RepositoryGit {
+  params?: any;
+  result: ISearchResult = { totalCount: 1, items: [] };
 
-const makeSut = (): SearchRepositoryController => {
-  return new SearchRepositoryController(mockRepositoryService);
+  async search(params: ISearchParams): Promise<ISearchResult> {
+    this.params = params;
+
+    return this.result;
+  }
+}
+
+const makeSut = () => {
+  const repositoryServiceSpy = new MockRepositoryServiceSpy();
+  const sut = new SearchRepositoryController(repositoryServiceSpy);
+
+  return { sut, repositoryServiceSpy };
 };
 
 describe('Search Repository Controller', () => {
-  test('Should return 400 if no query is provided', () => {
-    const sut = makeSut();
+  test('Should return 400 if no query is provided', async () => {
+    const { sut } = makeSut();
     const httpRequest = {
       body: {},
     };
-    const httpResponse = sut.handle(httpRequest);
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('query parameter'));
+    expect(httpResponse.body).toEqual(new MissingParamError('query'));
   });
 
-  test('Should call repository service with correct parameters', () => {
-    const sut = makeSut();
+  test('Should call repository service with correct parameters', async () => {
+    const { sut, repositoryServiceSpy } = makeSut();
     const httpRequest = {
       body: {
         query: 'react',
@@ -30,9 +45,9 @@ describe('Search Repository Controller', () => {
       },
     };
 
-    sut.handle(httpRequest);
+    await sut.handle(httpRequest);
 
-    expect(mockRepositoryService.search).toHaveBeenCalledWith({
+    expect(repositoryServiceSpy.params).toEqual({
       query: 'react',
       page: 2,
       perPage: 30,
