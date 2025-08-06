@@ -7,6 +7,8 @@ import {
 } from '../../domain/interfaces/IRepositoryGit';
 import { UnexpectedError } from '../errors/UnexpectedError';
 import { HttpRequest } from '../protocols/Http';
+import { Validator } from '../protocols/Validator';
+import { ValidationError } from '../errors/ValidationError';
 
 class MockRepositoryServiceSpy implements RepositoryGit {
   params?: any;
@@ -19,40 +21,62 @@ class MockRepositoryServiceSpy implements RepositoryGit {
   }
 }
 
+class ValidatorSpy implements Validator {
+  input: any;
+  error: Error | null = null;
+  output: any = {};
+
+  validate(input: any): any {
+    this.input = input;
+
+    if (this.error) {
+      throw this.error;
+    }
+
+    return this.output;
+  }
+}
+
 const makeSut = () => {
   const repositoryServiceSpy = new MockRepositoryServiceSpy();
-  const sut = new SearchRepositoryController(repositoryServiceSpy);
+  const validatorSpy = new ValidatorSpy();
+  const sut = new SearchRepositoryController(
+    repositoryServiceSpy,
+    validatorSpy
+  );
 
-  return { sut, repositoryServiceSpy };
+  return { sut, repositoryServiceSpy, validatorSpy };
 };
 
 describe('Search Repository Controller', () => {
-  test('Should return 400 if no query is provided', async () => {
-    const { sut } = makeSut();
+  test('Should return 400 if validation throws a ValidationError', async () => {
+    const { sut, validatorSpy } = makeSut();
+    const validationError = new ValidationError('Validation failed');
+    validatorSpy.error = validationError;
     const httpRequest: HttpRequest = { query: {} };
+
     const httpResponse = await sut.handle(httpRequest);
+
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body.error).toEqual(
-      new MissingParamError('query').message
-    );
+    expect(httpResponse.body.error).toBe(validationError.message);
   });
 
   test('Should call repository service with correct parameters', async () => {
-    const { sut, repositoryServiceSpy } = makeSut();
+    const { sut, repositoryServiceSpy, validatorSpy } = makeSut();
+    const validatedData = { query: 'validated_query', page: 2, per_page: 20 };
+    validatorSpy.output = validatedData;
+
     const httpRequest = {
       query: {
-        query: 'react',
-        page: '2',
-        per_page: '30',
+        query: 'any',
       },
     };
-
     await sut.handle(httpRequest);
 
     expect(repositoryServiceSpy.params).toEqual({
-      query: 'react',
-      page: 2,
-      perPage: 30,
+      query: validatedData.query,
+      page: validatedData.page,
+      perPage: validatedData.per_page,
     });
   });
 
