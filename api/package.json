@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "build": "tsc",
-    "dev": "nodemon --watch src/**/*.ts --exec \"npx ts-node src/server.ts\"",
+    "dev": "nodemon -e ts --watch src/**/*.ts --exec \"npx ts-node src/server.ts\"",
     "test": "jest",
     "test:staged": "jest",
     "test:only": "jest --no-coverage --watch",

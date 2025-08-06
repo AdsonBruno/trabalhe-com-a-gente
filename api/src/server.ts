@@ -1,29 +1,15 @@
 import express from 'express';
-import { AxiosAdapter } from './infra/http/AxiosAdapter';
-import { GitRepository } from './data/services/GitRepository';
-import { SearchRepositoryController } from './presentation/controllers/searchRepository';
-import { adaptRoute } from './main/adapters/ExpressRouteAdapter';
-import { configDotenv } from 'dotenv';
+import dotenv from 'dotenv';
+import searchRoutes from './main/routes/SearchRoutes';
 
-configDotenv();
-
-const GITHUB_API_URL = process.env.GITHUB_API_URL; //'https://api.github.com/search/repositories';
-
-if (!GITHUB_API_URL) {
-  console.error(
-    'Erro: The environment variable GITHUB_API_URL is not defined.'
-  );
-}
-const axiosAdapter = new AxiosAdapter();
-const gitRepository = new GitRepository(GITHUB_API_URL, axiosAdapter);
-const searchRepositoryController = new SearchRepositoryController(
-  gitRepository
-);
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-app.post('/api/search', adaptRoute(searchRepositoryController));
+const router = express.Router();
+searchRoutes(router);
+app.use(router);
 
 const PORT = process.env.PORT || 3000;
 
