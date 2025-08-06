@@ -32,7 +32,9 @@ describe('Search Repository Controller', () => {
     const httpRequest: HttpRequest = { query: {} };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('query'));
+    expect(httpResponse.body.error).toEqual(
+      new MissingParamError('query').message
+    );
   });
 
   test('Should call repository service with correct parameters', async () => {

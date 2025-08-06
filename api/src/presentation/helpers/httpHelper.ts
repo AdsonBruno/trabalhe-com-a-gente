@@ -3,7 +3,7 @@ import { HttpResponse } from '../protocols/http';
 
 export const badRequest = (error: Error): HttpResponse => ({
   statusCode: 400,
-  body: error,
+  body: { error: error.message },
 });
 
 export const serverError = (error: Error): HttpResponse => ({
