@@ -3,26 +3,31 @@ import { HttpResponse, HttpRequest } from '../protocols/Http';
 import { badRequest, ok, serverError } from '../helpers/HttpHelper';
 import { Controller } from '../protocols/Controller';
 import { RepositoryGit } from '../../domain/interfaces/IRepositoryGit';
+import { z, ZodError } from 'zod';
+import { Validator } from '../protocols/Validator';
+import { ValidationError } from '../errors/ValidationError';
 
 export class SearchRepositoryController implements Controller {
-  constructor(private readonly repositoryService: RepositoryGit) {}
+  constructor(
+    private readonly repositoryService: RepositoryGit,
+    private readonly validator: Validator
+  ) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      if (!httpRequest.query || !httpRequest.query.query) {
-        return badRequest(new MissingParamError('query'));
-      }
-
-      const { query, page = '1', per_page = '10' } = httpRequest.query;
+      const validateQuery = this.validator.validate(httpRequest.query);
 
       const result = await this.repositoryService.search({
-        query: String(query),
-        page: parseInt(String(page), 10),
-        perPage: parseInt(String(per_page), 10),
+        query: validateQuery.query,
+        page: validateQuery.page,
+        perPage: validateQuery.per_page,
       });
 
       return ok(result);
     } catch (error) {
+      if (error instanceof ValidationError) {
+        return badRequest(error);
+      }
       return serverError(error);
     }
   }
