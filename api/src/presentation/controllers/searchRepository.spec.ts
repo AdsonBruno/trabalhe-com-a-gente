@@ -6,6 +6,7 @@ import {
   RepositoryGit,
 } from '../../domain/interfaces/IRepositoryGit';
 import { UnexpectedError } from '../errors/unexpectedError';
+import { HttpRequest } from '../protocols/http';
 
 class MockRepositoryServiceSpy implements RepositoryGit {
   params?: any;
@@ -28,9 +29,7 @@ const makeSut = () => {
 describe('Search Repository Controller', () => {
   test('Should return 400 if no query is provided', async () => {
     const { sut } = makeSut();
-    const httpRequest = {
-      body: {},
-    };
+    const httpRequest: HttpRequest = { query: {} };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError('query'));
@@ -39,7 +38,7 @@ describe('Search Repository Controller', () => {
   test('Should call repository service with correct parameters', async () => {
     const { sut, repositoryServiceSpy } = makeSut();
     const httpRequest = {
-      body: {
+      query: {
         query: 'react',
         page: '2',
         per_page: '30',
@@ -61,7 +60,7 @@ describe('Search Repository Controller', () => {
       throw new Error();
     });
 
-    const httpRequest = { body: { query: 'any_query' } };
+    const httpRequest = { query: { query: 'any_query' } };
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse.statusCode).toBe(500);

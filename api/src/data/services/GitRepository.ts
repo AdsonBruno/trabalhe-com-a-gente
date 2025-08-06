@@ -21,7 +21,7 @@ export class GitRepository implements RepositoryGit {
       params: {
         q: params.query,
         page: params.page,
-        perPage: params.perPage,
+        per_page: params.perPage,
       },
     });
 
