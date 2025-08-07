@@ -28,7 +28,7 @@ export class SearchRepositoryController implements Controller {
       if (error instanceof ValidationError) {
         return badRequest(error);
       }
-      return serverError(error);
+      return serverError(error as Error);
     }
   }
 }
