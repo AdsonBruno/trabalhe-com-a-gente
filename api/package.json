@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node dist/Server.js",
     "build": "tsc",
-    "dev": "nodemon -e ts --watch src/**/*.ts --exec \"npx ts-node src/server.ts\"",
+    "dev": "nodemon -e ts --watch src/**/*.ts --exec \"npx ts-node src/Server.ts\"",
     "test": "jest",
     "test:staged": "jest",
     "test:only": "jest --no-coverage --watch",
@@ -16,6 +16,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/axios": "^0.9.36",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.1.0",
@@ -27,8 +28,10 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "axios": "^1.11.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "ioredis": "^5.7.0",
     "zod": "^4.0.15"
   }
 }
