@@ -1,10 +1,12 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import searchRoutes from './main/routes/SearchRoutes';
+import cors from 'cors';
 
 dotenv.config();
-
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 const router = express.Router();

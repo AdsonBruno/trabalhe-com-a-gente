@@ -1,5 +1,4 @@
 import { SearchRepositoryController } from './SearchRepository';
-import { MissingParamError } from '../errors/MissingParamError';
 import {
   SearchParams,
   SearchResult,
