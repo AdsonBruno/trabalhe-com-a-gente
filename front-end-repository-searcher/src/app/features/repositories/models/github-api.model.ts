@@ -5,6 +5,7 @@ export interface Owner {
 
 export interface GithubRepositoryItem {
   id: number;
+  name: string;
   full_name: string;
   owner: Owner;
   html_url: string;
