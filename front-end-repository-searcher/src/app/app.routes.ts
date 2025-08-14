@@ -4,7 +4,7 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./features/repositories/repositories').then(
+      import('./features/repositories/repositories.component').then(
         (c) => c.Repositories
       ),
   },

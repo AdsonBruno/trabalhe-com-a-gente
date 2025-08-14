@@ -1,0 +1,6 @@
+<h1>Buscador de Repositórios</h1>
+<div class="repository-list">
+  @for (repo of repositories(); track repo.id) {
+  <app-repository-card [repository]="repo" />
+  }
+</div>
