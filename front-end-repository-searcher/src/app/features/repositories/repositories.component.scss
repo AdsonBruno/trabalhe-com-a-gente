@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $primary-color: #58a6ff;
 $dark-bg: #22272e;
 $input-bg: #2d333b;
@@ -64,7 +66,7 @@ $transition-speed: 0.5s;
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: darken(#7b61ff, 10%);
+      background-color: color.adjust(#7b61ff, $lightness: -10%);
     }
   }
 
@@ -100,7 +102,14 @@ $transition-speed: 0.5s;
 }
 
 .repositrory-list {
-  margin-top: 24px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.search-container.searched .repositrory-list {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 h1 {
@@ -108,4 +117,33 @@ h1 {
   font-weight: 600;
   color: #c9d1d9;
   margin-bottom: 12px;
+}
+
+p {
+  font-size: 3rem;
+  font-weight: 500;
+  color: #dadada;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+  color: $text-color;
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+
+    &:disabled {
+      background-color: #373e47;
+      color: #8b949e;
+    }
+  }
+
+  span {
+    font-weight: 500;
+  }
 }

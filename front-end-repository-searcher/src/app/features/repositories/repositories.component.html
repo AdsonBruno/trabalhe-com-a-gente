@@ -24,7 +24,24 @@
       <p>Nenhum repositório encontrado.</p>
       }
     </div>
-    }
+
+    @if (repositories().length > 0) {
+    <div class="pagination-controls">
+      <button
+        (click)="goToPage(currentPage() - 1)"
+        [disabled]="currentPage() === 1"
+      >
+        Anterior
+      </button>
+      <span> Página {{ currentPage() }} de {{ totalPages() }}</span>
+      <button
+        (click)="goToPage(currentPage() + 1)"
+        [disabled]="currentPage() === totalPages()"
+      >
+        Próximo
+      </button>
+    </div>
+    } }
   </div>
   }
 </div>

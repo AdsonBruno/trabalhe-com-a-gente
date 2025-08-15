@@ -1,10 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 
 import { GithubService } from './services/github.service';
 import { RepositoryAdapter } from './adapters/repository.adapter';
 import { Repository } from './models/repository.model';
 import { CommonModule } from '@angular/common';
-import { map } from 'rxjs';
 import { RepositoryCardComponent } from './components/repository-card/repository-card.component';
 
 @Component({
@@ -19,38 +18,57 @@ export class Repositories {
   hasSearched = signal<boolean>(false);
   isLoading = signal<boolean>(false);
 
+  currentQuery = signal<string>('');
+  currentPage = signal<number>(1);
+  totalResults = signal<number>(0);
+  readonly itemsPerPage = 20;
+
+  totalPages = computed(() =>
+    Math.ceil(this.totalResults() / this.itemsPerPage)
+  );
+
   constructor(
     private githubService: GithubService,
     private adapter: RepositoryAdapter
   ) {}
 
-  // ngOnInit(): void {
-  //   this.onSearch('angular');
-  // }
-
   onSearch(query: string): void {
     if (!query) return;
 
-    this.isLoading.set(true);
+    this.currentQuery.set(query);
+    this.currentPage.set(1);
     this.hasSearched.set(true);
+    this.fetchRepositories(query, 1);
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages()) return;
+
+    this.currentPage.set(page);
+    this.fetchRepositories(this.currentQuery(), page);
+  }
+
+  private fetchRepositories(query: string, page: number): void {
+    this.isLoading.set(true);
+    this.repositories.set([]);
 
     this.githubService
-      .searchRepositories(query)
-      .pipe(
-        map((response) =>
-          response.items.map((item) => this.adapter.adapt(item))
-        )
-      )
+      .searchRepositories(query, page, this.itemsPerPage)
       .subscribe({
-        next: (repositories) => {
-          this.repositories.set(repositories);
+        next: (response) => {
+          const adaptedRepositories = response.items.map((item) =>
+            this.adapter.adapt(item)
+          );
+
+          this.repositories.set(adaptedRepositories);
+          this.totalResults.set(Math.min(response.total_count, 1000));
           this.isLoading.set(false);
         },
         error: (err) => {
-          console.log('Erro ao buscar repositórios: ', err);
-
+          console.error('Erro ao buscar repositórios: ', err);
           this.isLoading.set(false);
           this.repositories.set([]);
+          this.totalResults.set(0);
         },
       });
   }
