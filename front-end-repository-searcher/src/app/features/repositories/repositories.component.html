@@ -1,6 +1,30 @@
-<h1>Buscador de Repositórios</h1>
-<div class="repository-list">
-  @for (repo of repositories(); track repo.id) {
-  <app-repository-card [repository]="repo" />
+<div class="search-container" [class.searched]="hasSearched()">
+  <div class="search-form">
+    <h1 class="title">Buscador de Repositórios</h1>
+    <div class="input-wrapper">
+      <input
+        #searchInput
+        type="text"
+        placeholder="Buscar repositório..."
+        (keyup.enter)="onSearch(searchInput.value)"
+      />
+    </div>
+    <button (click)="onSearch(searchInput.value)">Buscar</button>
+  </div>
+
+  @if (hasSearched()) {
+  <div class="results-container">
+    @if (isLoading()) {
+    <p>Carregando...</p>
+    } @else {
+    <div class="repository-list">
+      @for (repo of repositories(); track repo.id) {
+      <app-repository-card [repository]="repo" />
+      } @empty {
+      <p>Nenhum repositório encontrado.</p>
+      }
+    </div>
+    }
+  </div>
   }
 </div>

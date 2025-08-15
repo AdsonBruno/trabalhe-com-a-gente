@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { GithubService } from './services/github.service';
 import { RepositoryAdapter } from './adapters/repository.adapter';
@@ -14,19 +14,26 @@ import { RepositoryCardComponent } from './components/repository-card/repository
   templateUrl: './repositories.component.html',
   styleUrl: './repositories.component.scss',
 })
-export class Repositories implements OnInit {
+export class Repositories {
   repositories = signal<Repository[]>([]);
+  hasSearched = signal<boolean>(false);
+  isLoading = signal<boolean>(false);
 
   constructor(
     private githubService: GithubService,
     private adapter: RepositoryAdapter
   ) {}
 
-  ngOnInit(): void {
-    this.onSearch('angular');
-  }
+  // ngOnInit(): void {
+  //   this.onSearch('angular');
+  // }
 
   onSearch(query: string): void {
+    if (!query) return;
+
+    this.isLoading.set(true);
+    this.hasSearched.set(true);
+
     this.githubService
       .searchRepositories(query)
       .pipe(
@@ -34,9 +41,17 @@ export class Repositories implements OnInit {
           response.items.map((item) => this.adapter.adapt(item))
         )
       )
-      .subscribe((repositories) => {
-        this.repositories.set(repositories);
-        console.log('Dados recebidos e adaptados: ', this.repositories());
+      .subscribe({
+        next: (repositories) => {
+          this.repositories.set(repositories);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.log('Erro ao buscar repositórios: ', err);
+
+          this.isLoading.set(false);
+          this.repositories.set([]);
+        },
       });
   }
 }

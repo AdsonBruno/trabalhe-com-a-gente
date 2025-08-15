@@ -1,4 +1,4 @@
-import { LanguageColorPipe } from './language-color-pipe';
+import { LanguageColorPipe } from './language-color.pipe';
 
 describe('LanguageColorPipe', () => {
   it('create an instance', () => {
