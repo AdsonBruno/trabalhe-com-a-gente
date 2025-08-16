@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe, Location } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
-import { CapitalizePipe } from '../repositories/pipes/capitalize-pipe';
+import { CapitalizePipe } from '../repositories/pipes/capitalize.pipe';
 import { LanguageColorPipe } from '../repositories/pipes/language-color.pipe';
 import { Repository } from '../repositories/models/repository.model';
 import { StateService } from '../../core/state.service';

@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Repository } from '../../models/repository.model';
 import { LanguageColorPipe } from '../../pipes/language-color.pipe';
-import { CapitalizePipe } from '../../pipes/capitalize-pipe';
+import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 import { RouterLink } from '@angular/router';
 
 @Component({
