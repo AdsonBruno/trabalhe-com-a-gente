@@ -1,0 +1,64 @@
+@if (repository(); as repo ) {
+<div class="detail-container">
+  <button (click)="goBack()" class="back-button">← Voltar para a lista</button>
+
+  <div class="detail-header">
+    <img
+      [src]="repo.ownerAvatarUrl"
+      [alt]="repo.ownerLogin"
+      class="owner-avatar"
+    />
+    <h1 class="repo-title">{{ repo.fullName | capitalize }}</h1>
+  </div>
+
+  <p class="repo-description">{{ repo.description }}</p>
+
+  <a
+    [href]="repo.htmlUrl"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="github-link"
+    >Ver no github ↗</a
+  >
+
+  <div class="stats-grid">
+    <div class="stats-item">
+      <span class="stat-label"> Linguagem Principal</span>
+      <div class="stats-value language-value">
+        @if (repo.language) {
+        <span
+          class="language-indicator"
+          [ngStyle]="{ 'background-color': repo.language | languageColor }"
+        ></span>
+        {{ repo.language }}
+        } @else {<span>N/A</span>}
+      </div>
+    </div>
+
+    <div class="stat-item">
+      <span class="stat-label">Forks</span>
+      <span class="stat-value">forks: {{ repo.forksCount }}</span>
+    </div>
+
+    <div class="stat-item">
+      <span class="stat-label">Última Atualização </span>
+      <span class="stat-value">
+        {{ repo.updatedAt | date : "dd/MM/yyyy" }}</span
+      >
+    </div>
+  </div>
+
+  <div class="tags-container">
+    <h3 class="tags-title">Tópicos</h3>
+    <div class="card-tags">
+      @for (topic of repo.topics; track topic) {
+      <span class="tag">{{ topic }}</span>
+      } @empty {
+      <p>Nenhum tópico associado</p>
+      }
+    </div>
+  </div>
+</div>
+} @else {
+<p>A carregar detalhes...</p>
+}

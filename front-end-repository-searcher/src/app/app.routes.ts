@@ -8,4 +8,11 @@ export const routes: Routes = [
         (c) => c.Repositories
       ),
   },
+  {
+    path: 'repository/:owner/:name',
+    loadComponent: () =>
+      import('./features/repository-detail/repository-detail.component').then(
+        (c) => c.RepositoryDetailComponent
+      ),
+  },
 ];
