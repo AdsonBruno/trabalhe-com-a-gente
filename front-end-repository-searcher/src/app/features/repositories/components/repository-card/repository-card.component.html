@@ -1,26 +1,33 @@
-<div class="card">
-  <h2 class="card-title">{{ repository.name | capitalize }}</h2>
-  <p class="card-description">{{ repository.description }}</p>
+<a
+  [routerLink]="['/repository', repository.ownerLogin, repository.name]"
+  class="card-link"
+>
+  <div class="card">
+    <h2 class="card-title">{{ repository.name | capitalize }}</h2>
+    <p class="card-description">{{ repository.description }}</p>
 
-  <div class="card-tag">
-    @for (topic of repository.topics.slice(0, 5); track topic) {
-    <span class="tag">{{ topic }}</span>
-    }
-  </div>
+    <div class="card-tag">
+      @for (topic of repository.topics.slice(0, 5); track topic) {
+      <span class="tag">{{ topic }}</span>
+      }
+    </div>
 
-  <div class="card-meta">
-    @if (repository.language) {
-    <span class="meta-item">
-      <span
-        class="language-indicator"
-        [ngStyle]="{ 'background-color': repository.language | languageColor }"
-      ></span>
-      {{ repository.language }}
-    </span>
-    }
-    <span class="meta-item"> ☆ {{ repository.starCount }} </span>
-    <span class="meta-item">
-      Atualizado {{ repository.updatedAt | date : "short" }}
-    </span>
+    <div class="card-meta">
+      @if (repository.language) {
+      <span class="meta-item">
+        <span
+          class="language-indicator"
+          [ngStyle]="{
+            'background-color': repository.language | languageColor
+          }"
+        ></span>
+        {{ repository.language }}
+      </span>
+      }
+      <span class="meta-item"> ☆ {{ repository.starCount }} </span>
+      <span class="meta-item">
+        Atualizado {{ repository.updatedAt | date : "short" }}
+      </span>
+    </div>
   </div>
-</div>
+</a>

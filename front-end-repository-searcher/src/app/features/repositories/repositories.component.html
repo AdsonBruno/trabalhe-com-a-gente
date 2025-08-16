@@ -19,7 +19,11 @@
     } @else {
     <div class="repository-list">
       @for (repo of repositories(); track repo.id) {
-      <app-repository-card [repository]="repo" />
+      <app-repository-card
+        [repository]="repo"
+        [style.--animation-order]="$index"
+        (click)="selectRepository(repo)"
+      />
       } @empty {
       <p>Nenhum repositório encontrado.</p>
       }
