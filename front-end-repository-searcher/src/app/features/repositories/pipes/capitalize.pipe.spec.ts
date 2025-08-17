@@ -12,6 +12,12 @@ describe('CapitalizePipe', () => {
     expect(pipe.transform('angular')).toBe('Angular');
   });
 
+  it('should handle an already capitalized string', () => {
+    const pipe = new CapitalizePipe();
+
+    expect(pipe.transform('React')).toBe('React');
+  });
+
   it('should return an empty string for null or undefined input', () => {
     const pipe = new CapitalizePipe();
 
