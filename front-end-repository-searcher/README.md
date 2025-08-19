@@ -99,3 +99,16 @@ Para executar os testes de unidade, use o comando:
 ```bash
   ng test
 ```
+## Imagens da Aplicação rodando
+
+|Tela de Busca|
+|---|
+|<img src="assets/tela1-busca.png" alt="Tela de Busca">|
+
+|Lista de Repositórios Encontrados|
+|---|
+|<img src="assets/tela2-lista-de-repositorios.png" alt="Lista de Repositórios">|
+
+|Detalhes do Repositório|
+|---|
+|<img src="assets/tela3-detalhes-do-repositorios.png" alt="Detalhes do repositório" >|
