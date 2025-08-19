@@ -26,6 +26,48 @@ Veja o exemplo do esboço da arquitetura que foi utilizada no desenvolvimento ba
 |---|
 |<img src="assets/arquitetura-da-api.png" alt="Arquitetura da API" width="720" height="720">|
 
+## 📂 Estrutura de Pastas
+
+A aplicação está organizada conforme a estrutura de pastas abaixo:
+
+```
+/
+├── .dockerignore         # Ignora arquivos desnecessários no build do Docker
+├── .env                  # Arquivo de variáveis de ambiente (local)
+├── .env.example          # Exemplo de arquivo de ambiente
+├── docker-compose.yml    # Orquestra os containers da API e do Redis
+├── Dockerfile            # Define como construir a imagem Docker da API
+├── package.json          # Dependências e scripts do projeto
+├── tsconfig.json         # Configurações do compilador TypeScript
+└── src/
+    ├── data/             # Camada de Dados: implementa as regras de negócio
+    │   ├── protocols/    # Contratos (interfaces) para a camada de dados
+    │   └── services/     # Implementações (ex: GitRepository)
+    │
+    ├── domain/           # Camada de Domínio: o coração da aplicação
+    │   └── interfaces/   # Entidades e regras de negócio puras
+    │
+    ├── infra/            # Camada de Infraestrutura: detalhes de implementação
+    │   ├── cache/        # Adapters para o cache (RedisAdapter)
+    │   ├── http/         # Adapters para clientes HTTP (AxiosAdapter)
+    │   └── validators/   # Adapters para validação (ZodValidatorAdapter)
+    │
+    ├── main/             # Camada Principal: composição da aplicação
+    │   ├── adapters/     # Adapters para o framework web (ExpressRouteAdapter)
+    │   ├── factories/    # Fábricas para criar instâncias com injeção de dependência
+    │   ├── routes/       # Definição das rotas da API
+    │   └── schemas/      # Schemas de validação (Zod)
+    │
+    ├── presentation/     # Camada de Apresentação: lida com o mundo externo (HTTP)
+    │   ├── controllers/  # Controladores que recebem as requisições
+    │   ├── errors/       # Erros customizados da aplicação
+    │   ├── helpers/      # Funções auxiliares para respostas HTTP
+    │   └── protocols/    # Contratos (interfaces) para a camada de apresentação
+    │
+    └── Server.ts         # Ponto de entrada da aplicação (inicializa o Express)
+
+```
+
 - Tambeém foi elaborado o diagrama de seqêuencia para mostrar um esboço de como ocorre a sequência desde a solicitação do usuário no front até o acesso e retorno dos dados pelo nosso backend acessando a API externa do `GitHub`.
 
 
